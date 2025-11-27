@@ -22,7 +22,7 @@ services:
     env_file:
       - .env
     ports:
-      - "3060:3060"
+      - "5000:5000"
     restart: unless-stopped
 
   queue:
