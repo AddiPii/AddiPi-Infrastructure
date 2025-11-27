@@ -36,6 +36,17 @@ services:
       - "3070:3070"
     restart: unless-stopped
 
+  auth:
+    build:
+      context: ../AddiPi-Auth-Service
+      dockerfile: Dockerfile
+    image: addipi/auth-service
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
 networks:
   default:
     name: addipi-network
