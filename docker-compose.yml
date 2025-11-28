@@ -12,6 +12,7 @@ services:
       - "3050:3050"
     depends_on:
       - queue
+      - auth
     restart: unless-stopped
 
   files:
@@ -23,6 +24,8 @@ services:
       - .env
     ports:
       - "5000:5000"
+    depends_on:
+      - auth
     restart: unless-stopped
 
   queue:
@@ -34,6 +37,8 @@ services:
       - .env
     ports:
       - "3070:3070"
+    depends_on:
+      - auth
     restart: unless-stopped
 
   auth:
@@ -46,6 +51,12 @@ services:
     ports:
       - "3001:3001"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   default:
