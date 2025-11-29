@@ -1,5 +1,93 @@
 # AddiPi-Infrastructure
 
+Short description and local run instructions for the AddiPi microservices environment.
+
+**Contents**
+- `printer` — service that handles printers
+- `files` — service for storing and serving files
+- `queue` — job queue service
+- `auth` — authentication and authorization service
+
+**Requirements**
+- `docker` and `docker-compose` (compatible with the included `docker-compose.yml`)
+
+**Environment configuration**
+- Create or copy a `.env` file in the `AddiPi-Infrastructure` directory with required variables (e.g. `PORT`, DB connection, keys).
+- Note: values from `.env` are read as strings — convert to numbers in your code (e.g. `Number(process.env.PORT)`).
+
+**Run locally**
+Open PowerShell in the `AddiPi-Infrastructure` directory and run:
+
+```powershell
+docker-compose up --build
+```
+
+Or run in background:
+
+```powershell
+docker-compose up -d --build
+docker-compose logs -f
+```
+
+To stop and remove containers:
+
+```powershell
+docker-compose down
+```
+
+**Healthchecks and readiness**
+- A `healthcheck` is added for the `auth` service in `docker-compose.yml` that hits `GET /health` on port `3001`.
+- `healthcheck` helps diagnostics (`healthy`/`unhealthy` visible in `docker ps`), but in Compose v3 `depends_on` does NOT wait for `healthy` — it only controls start order.
+
+**`depends_on` — important note**
+- `depends_on` makes Docker Compose start the referenced services before the dependent ones (and stop them in reverse order). It does not guarantee the service is ready to accept requests.
+- If your application requires `auth` to be fully available before other services start, use one of the following approaches:
+  - Add retry/backoff in the client code (recommended)
+  - Use a startup wrapper like `wait-for-it.sh` / `wait-for` / `dockerize` in client images to wait for a specific endpoint/port before launching the app
+  - Ensure `auth` exposes a simple health endpoint (`/health`) that returns 200 when ready
+
+Example `wait-for` usage in a `Dockerfile` / entrypoint (schematic):
+
+```dockerfile
+# copy wait-for-it into the image and use it as an entrypoint wrapper
+COPY wait-for-it.sh /usr/local/bin/wait-for-it
+ENTRYPOINT ["/usr/local/bin/wait-for-it", "auth:3001", "--", "npm", "start"]
+```
+
+Or a simple `wait-for-auth.sh` wrapper example:
+
+```bash
+# wait-for-auth.sh
+set -e
+host="$1"
+shift
+until curl -sSf "http://$host/health" > /dev/null; do
+  echo "Waiting for auth at $host..."
+  sleep 2
+done
+exec "$@"
+```
+
+**Best practices**
+- Do not rely only on `depends_on` for readiness guarantees.
+- Add healthchecks, implement retry with backoff in clients, or use `wait-for` wrappers in entrypoints.
+- Monitor logs with `docker-compose logs -f` for quick diagnostics.
+
+**Debug / Troubleshooting**
+- Check health status: `docker inspect --format='{{json .State.Health}}' <container>` or `docker ps`.
+- If a service does not start, inspect logs: `docker-compose logs <service>`.
+
+**Next steps (optional)**
+- I can add an example `wait-for-auth.sh` to this repo and modify selected services' Dockerfiles to use it as a startup wrapper.
+- I can also add small local integration checks (a script that validates health endpoints after startup).
+
+---
+
+If you want me to add `wait-for` / `wait-for-it` to specific services (`printer`, `files`, `queue`), tell me which ones and whether to also modify Dockerfiles in the respective repositories (`../AddiPi-Printer-Service`, `../AddiPi-Files-Service`, `../AddiPi-Queue-Service`).
+
+
+# [PL] AddiPi-Infrastructure
+
 Krótki opis i instrukcja uruchomienia środowiska lokalnego dla mikroserwisów AddiPi.
 
 **Zawartość**
