@@ -57,6 +57,19 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+   
+   user:
+    build:
+      context: ../AddiPi-User-Service
+      dockerfile: Dockerfile
+    image: addipi/user-service
+    env_file:
+      - .env
+    ports:
+      - "3002:3002"
+    depends_on:
+      - auth
+    restart: unless-stopped
 
 networks:
   default:
