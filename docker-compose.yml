@@ -70,6 +70,17 @@ services:
     depends_on:
       - auth
     restart: unless-stopped
+  
+  video:
+    build:
+      context: ../AddiPi-Video-Service
+      dockerfile: Dockerfile
+    image: addipi/video-service
+    env_file:
+      - .env
+    ports:
+      - "3003:3003"
+    restart: unless-stopped
 
 networks:
   default:
