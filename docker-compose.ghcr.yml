@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     ports:
-      - "${QUEUE_PORT:-4000}:4000"
+      - "${QUEUE_PORT:-3070}:3070"
     restart: unless-stopped
     networks:
       - addipi-network
