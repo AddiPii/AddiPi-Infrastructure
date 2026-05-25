@@ -1,0 +1,14 @@
+resource_group_name     = "AddiPi-RG"
+resource_group_location = "polandcentral"
+shared_region           = "swedencentral"
+iot_hub_location        = "switzerlandnorth"
+
+storage_account_name      = "addipifiles"
+servicebus_namespace_name = "addipisb"
+cosmos_account_name       = "addipi-cosmos"
+iot_hub_name              = "addipi-iothub"
+
+tags = {
+  project   = "AddiPi"
+  managedBy = "terraform"
+}

@@ -1,2 +1,9 @@
 .env
 .env.vercel
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+*.tfvars.env
+.env.vercel

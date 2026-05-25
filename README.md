@@ -80,6 +80,7 @@ exec "$@"
 **Next steps (optional)**
 - I can add an example `wait-for-auth.sh` to this repo and modify selected services' Dockerfiles to use it as a startup wrapper.
 - I can also add small local integration checks (a script that validates health endpoints after startup).
+- I added a Terraform baseline in [terraform/](terraform) that matches the live Azure resources I found with Azure CLI and includes import blocks.
 
 ---
 
