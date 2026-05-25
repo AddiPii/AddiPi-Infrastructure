@@ -18,7 +18,7 @@ services:
   files:
     build:
       context: ../AddiPi-Files-Service
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.oracle
     image: addipi/files-service
     env_file:
       - .env
