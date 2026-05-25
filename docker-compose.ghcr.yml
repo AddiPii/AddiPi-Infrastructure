@@ -15,9 +15,27 @@ services:
     image: ${QUEUE_IMAGE:-ghcr.io/AddiPii/AddiPi-Queue-Service:latest}
     env_file:
       - .env
+    depends_on:
+      - auth
     ports:
       - "${QUEUE_PORT:-3070}:3070"
     restart: unless-stopped
+    networks:
+      - addipi-network
+
+  auth:
+    image: ${AUTH_IMAGE:-ghcr.io/AddiPii/AddiPi-Auth-Service:latest}
+    env_file:
+      - .env
+    ports:
+      - "${AUTH_PORT:-3001}:3001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - addipi-network
 
@@ -25,6 +43,9 @@ services:
     image: ${PRINTER_IMAGE:-ghcr.io/AddiPii/AddiPi-Printer-Service:latest}
     env_file:
       - .env
+    depends_on:
+      - queue
+      - auth
     ports:
       - "${PRINTER_PORT:-3050}:3050"
     restart: unless-stopped
@@ -39,6 +60,26 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_POLL_INTERVAL=300
     restart: unless-stopped
+
+  user:
+    image: ${USER_IMAGE:-ghcr.io/AddiPii/AddiPi-User-Service:latest}
+    env_file:
+      - .env
+    depends_on:
+      - auth
+    ports:
+      - "${USER_PORT:-3002}:3002"
+    restart: unless-stopped
+    networks:
+      - addipi-network
+
+  # video:
+  #   image: ${VIDEO_IMAGE:-ghcr.io/AddiPii/AddiPi-Video-Service:latest}
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${VIDEO_PORT:-3003}:3003"
+  #   restart: unless-stopped
 
 networks:
   addipi-network:
