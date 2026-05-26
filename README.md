@@ -82,10 +82,6 @@ exec "$@"
 - I can also add small local integration checks (a script that validates health endpoints after startup).
 - I added a Terraform baseline in [terraform/](terraform) that matches the live Azure resources I found with Azure CLI and includes import blocks.
 
----
-
-If you want me to add `wait-for` / `wait-for-it` to specific services (`printer`, `files`, `queue`), tell me which ones and whether to also modify Dockerfiles in the respective repositories (`../AddiPi-Printer-Service`, `../AddiPi-Files-Service`, `../AddiPi-Queue-Service`).
-
 
 # [PL] AddiPi-Infrastructure
 
@@ -170,7 +166,3 @@ exec "$@"
 **Następne kroki (opcjonalne)**
 - Mogę dodać przykładowy `wait-for-auth.sh` do tego repo i zmodyfikować `Dockerfile` wybranych usług, żeby używały go jako wrappera startowego.
 - Mogę też dodać krótkie testy integracyjne uruchamiane lokalnie (np. skrypt sprawdzający health endpointy po starcie).
-
----
-
-Jeśli chcesz, żebym dodał `wait-for`/`wait-for-it` do konkretnych usług (`printer`, `files`, `queue`) — wybierz które i czy modyfikować też Dockerfile'y w odpowiednich repo (`../AddiPi-Printer-Service`, `../AddiPi-Files-Service`, `../AddiPi-Queue-Service`).
