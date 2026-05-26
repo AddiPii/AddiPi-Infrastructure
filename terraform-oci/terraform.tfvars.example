@@ -1,0 +1,6 @@
+oci_profile = "DEFAULT"
+region      = "eu-frankfurt-1"
+
+compartment_ocid = "<COMPARTMENT_OCID>"
+
+instance_ssh_public_key = "<SSH_PUBLIC_KEY>"
