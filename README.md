@@ -166,3 +166,17 @@ exec "$@"
 **Następne kroki (opcjonalne)**
 - Mogę dodać przykładowy `wait-for-auth.sh` do tego repo i zmodyfikować `Dockerfile` wybranych usług, żeby używały go jako wrappera startowego.
 - Mogę też dodać krótkie testy integracyjne uruchamiane lokalnie (np. skrypt sprawdzający health endpointy po starcie).
+
+**Aktualizacje (maj 2026)**
+- Dodano skrypty wdrożeniowe: `deploy.sh` oraz `deploy-files-service.sh` (budowanie obrazów, push do ACR i uruchomienie ACI).
+- Dodano skrypt `infra.sh` i `cosmos.sh` do szybkiego tworzenia zasobów Azure (Resource Group, ACR, Cosmos DB itp.).
+- W repo pojawił się manifest Kubernetes: `addipi-pod.yml` (przykładowy pod z kilkoma serwisami i referencją do sekretów).
+- Dodano wariant `docker-compose.ghcr.yml` do uruchamiania usług z obrazów hostowanych w GHCR (możliwość użycia zmiennych środowiskowych dla obrazów).
+- Dodano katalog `terraform-oci/` z konfiguracją Terraform dla Oracle Cloud (dodatkowa opcja infrastruktury obok Azure).
+- W `terraform/` znajduje się baseline dla zasobów Azure (Storage, Service Bus, Cosmos DB, IoT Hub) oraz pliki pomocnicze (`variables.tf`, `outputs.tf`, `terraform.tfvars.example`).
+- Dodano plik przykładowy `.env.example` z listą wymaganych zmiennych środowiskowych.
+
+Jeśli chcesz, mogę:
+- rozszerzyć tę sekcję o dokładniejsze instrukcje użycia nowych skryptów,
+- dodać przykładowe wartości do `.env.example`,
+- albo zautomatyzować krótką sekcję "Szybkie wdrożenie" opartą o `deploy.sh`.
