@@ -60,6 +60,7 @@ services:
     environment:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_POLL_INTERVAL=3600
+      - DOCKER_API_VERSION=1.40
     restart: unless-stopped
 
   user:
